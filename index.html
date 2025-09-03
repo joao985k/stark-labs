@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Stark Labs</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <canvas id="particleCanvas"></canvas> <!-- Fundo com partículas interativas -->
+
+  <header>
+    <h1>Stark Labs</h1>
+  </header>
+
+  <nav class="navbar">
+    <ul>
+      <li><a href="#">Início</a></li>
+      <li><a href="#">Armaduras</a></li>
+      <li><a href="#">Tecnologia</a></li>
+      <li><a href="#">Contato</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <p class="pulse-text">"A tecnologia é minha armadura, o mundo é meu desafio."</p>
+    
+    <div class="card">
+      <h2>Inovação</h2>
+      <p>Passe o mouse e veja a energia pulsar...</p>
+      <div class="arc-reactor"></div>
+    </div>
+
+    <div class="galeria">
+    <img src= armadura1.jpg alt="Armadura 1">
+    <img src= armadura2.jpg alt="Armadura 2">
+    <img src= reatorarc.jpg alt="Arc Reactor">
+    </div>
+
+    <button class="btn">Ativar Arc Reactor</button>
+  </main>
+
+  <footer>
+    <p>© 2025 - Stark Industries</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+<body>
+  <!-- todo o seu conteúdo -->
+
+  <script>
+    // Aqui você coloca todo o código JS
+    const canvas = document.getElementById('particleCanvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    let particles = [];
+    const particleCount = 100;
+
+    for(let i = 0; i < particleCount; i++){
+        particles.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            size: Math.random() * 3 + 1,
+            speedX: (Math.random() - 0.5) * 1.5,
+            speedY: (Math.random() - 0.5) * 1.5
+        });
+    }
+
+    function animate(){
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        particles.forEach(p => {
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(0,255,255,0.7)';
+            ctx.fill();
+
+            p.x += p.speedX;
+            p.y += p.speedY;
+
+            if(p.x < 0 || p.x > canvas.width) p.speedX *= -1;
+            if(p.y < 0 || p.y > canvas.height) p.speedY *= -1;
+        });
+        requestAnimationFrame(animate);
+    }
+    animate();
+
+    canvas.addEventListener('mousemove', (e)=>{
+        particles.push({
+            x: e.clientX,
+            y: e.clientY,
+            size: Math.random()*3 + 2,
+            speedX: (Math.random() - 0.5) * 2,
+            speedY: (Math.random() - 0.5) * 2
+        });
+        if(particles.length > 150) particles.shift();
+    });
+
+    window.addEventListener('resize', ()=>{
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    });
+  </script>
+</body>
+</html>
